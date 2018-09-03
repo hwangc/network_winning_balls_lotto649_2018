@@ -1,0 +1,86 @@
+<script src="https://cdn.zoomcharts-cloud.com/1/latest/zoomcharts.js"></script>
+<script type="text/javascript" src="networkData.js"></script>
+<script type="text/javascript"> var ZoomChartsLicense = "ZCS-5j2i9iu4u: ZoomCharts SDK Single Developer Licencefor hwa..@..c.com (valid for development only); upgrades until: 2019-09-03"; var ZoomChartsLicenseKey = "24e47ff83877f39beea2ba630600668a3771b01f2709fea327" + "ba699a33d9c4744c3c154f01c6fd665ff8905902b3d63fca49df8f82dd333f8b4f05e6ef31436" + "44a31fd55e866abb8d00fc1a447ef58854c0c1e93be4844915af67fba8ad250c583f2c2dd1c73" + "aab51817609f63e20420f4a956af5785df52f234284461529a442f3648d5165895627d5811b3f" + "e7ef301201b5120cb4f7dac77aca453340c5ca892374ef25f8b7763457fe0e0240e13b9436872" + "a18792d2421dbc6a589b10b2536bb7cd4ae53415e4063fb53f3985512a6c22e7f37f103ad9fda" + "7ef6e040beb45f66ea804b898cdd402f188476fd49322dacadf49132e0e85e3bffedb7ccd06a9"; </script>
+<div id="demo"></div>
+<script>
+
+    var sliceColors = [
+        "rgba(111,82,184,1)",
+        "rgba(255,214,24,1)",
+        "rgba(47,195,47,1)",
+        "rgba(86,185,247,1)", 
+        "rgba(234,180,4,1)",
+        "rgba(23,103,44,1)",
+        "rgba(2,103,44,1)",
+        "rgba(122,103,44,1)",
+        "rgba(52,103,44,1)",
+        "rgba(92,103,44,1)",
+        "rgba(222,103,44,1)",
+        "rgba(56,103,44,1)",
+        "rgba(42,103,44,1)",
+        "rgba(242,103,44,1)",
+        "rgba(212,103,44,1)",
+        "rgba(72,103,44,1)",
+        "rgba(5,103,44,1)",
+        "rgba(30,103,44,1)",
+        "rgba(27,103,44,1)",
+        "rgba(9,103,44,1)",
+        "rgba(198,103,44,1)",
+        "rgba(105,103,44,1)",
+        "rgba(33,103,44,1)"
+    ];
+
+    var randomSeed = 10; // this can be changed to generate different data sets
+    function getRandomNumber() {
+        var x = Math.sin(randomSeed++) * 10000;
+        return x - Math.floor(x);
+    }
+    var t = new NetChart({
+        container: document.getElementById("demo"),
+        navigation: {
+            focusNodeExpansionRadius: 3,
+            initialNodes: ["n1"],
+            mode: "focusnodes"
+        },
+        style: {
+            node: { display: "roundtext"},
+            nodeLabel: { 
+                textStyle: {
+                    fillColor: "#fff"
+                }
+            },
+            nodeStyleFunction: nodeStyle,
+            linkStyleFunction: linkStyle
+        },
+        area: { height: 960 },
+        data: { preloaded: data },
+        layout: { nodeSpacing: 30 }
+    });
+    function nodeStyle(node) {
+        // node.image = "/dvsl/data/net-chart/friend-net/" + node.id + ".png";
+
+        if(!node.data.fillColor) {
+            var color = sliceColors[Math.floor(Math.random()*sliceColors.length)];
+
+            node.fillColor = node.data.fillColor = color; 
+            node.lineColor = node.data.lineColor =color.replace(",1)",",0.5)"); 
+        } else {
+            node.fillColor = node.data.fillColor;
+            node.lineColor = node.data.lineColor;
+            node.lineWidth = node.data.lineWidth;
+        }
+
+        node.label = node.data.name;
+
+        var min = 20;
+        var max = 55;
+        var nodeRadius = Math.floor(Math.random() * (max - min)) + min;
+        node.radius = nodeRadius;
+        if (node.hovered) node.radius = 70;
+    }
+    
+    function linkStyle(link){
+        link.radius = 3;
+        link.fillColor = ["#ccc"][Math.floor(getRandomNumber()* 4)];
+    }
+    </script>
